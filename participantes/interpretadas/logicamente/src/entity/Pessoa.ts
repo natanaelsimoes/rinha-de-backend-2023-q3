@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'pessoas' })
 export class Pessoa extends BaseEntity {
@@ -17,4 +17,14 @@ export class Pessoa extends BaseEntity {
 
   @Column('simple-array', { nullable: true })
     stack?: string[]
+
+  @Column('text', { nullable: false })
+    search: string
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  beforeSave (): void {
+    this.search = `${this.apelido} ${this.nome} ${this.stack?.join(' ') ?? ''}`
+      .toLocaleLowerCase()
+  }
 }

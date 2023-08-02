@@ -49,13 +49,12 @@ export const GetPessoasHandler: RouteHandlerMethod = async (request: FastifyRequ
   }
 
   const queryBuilder = Pessoa.createQueryBuilder()
-  const searchTerm = request.query.t
+  const searchTerm = request.query.t?.toLocaleLowerCase() ?? ''
 
-  if (searchTerm !== undefined && searchTerm.length > 0) {
+  if (searchTerm.length > 0) {
     queryBuilder
-      .where('lower(apelido) ILIKE :searchTerm', { searchTerm })
-      .orWhere('nome ILIKE :searchTerm', { searchTerm })
-      .orWhere('stack ILIKE :searchTerm', { searchTerm })
+      .addSelect(`'${searchTerm}' <<<-> search`, 'dist')
+      .orderBy('dist')
   }
 
   const pessoas = await queryBuilder.take(50).getMany()
