@@ -1,0 +1,58 @@
+version: '3.5'
+services:
+  api1:
+    build: .
+    hostname: api1
+    depends_on:
+      - db
+    expose:
+      - "3000"
+    environment:
+      - DATABASE_HOST=db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '0.5GB'
+
+  api2:
+    build: .
+    hostname: api2
+    depends_on:
+      - db
+    expose:
+      - "3000"
+    environment:
+      - DATABASE_HOST=db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '0.5GB'
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api1
+      - api2
+    ports:
+      - "9999:9999"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '0.5GB'
+
+  db:
+   image: postgres:15.3
+   expose:
+     - "5432"
+   environment:
+     - POSTGRES_PASSWORD=root
+   deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: '1.5GB'
