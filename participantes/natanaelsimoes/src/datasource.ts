@@ -8,10 +8,10 @@ export const AppDataSource = new DataSource({
   password: 'root',
   database: 'postgres',
   synchronize: false,
-  logging: true,
-  entities: process.env.ENV === 'dev' ? ['src/entity/*.ts'] : ['dist/entity/*.js'],
+  logging: false,
+  entities: process.env.ENV === 'dev' ? ['src/entity/*.ts'] : ['entity/*.js'],
   migrationsTransactionMode: 'each',
-  migrations: ['dist/migration/*.js'],
+  migrations: ['migration/*.js'],
   cache: {
     type: 'redis',
     options: {

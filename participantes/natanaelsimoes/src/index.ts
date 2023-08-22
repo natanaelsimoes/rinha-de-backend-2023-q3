@@ -14,7 +14,7 @@ import {
 } from './schema/PessoaSchema'
 
 const fastify = Fastify({
-  logger: true
+  logger: false
 })
 
 fastify.post('/pessoas', PostPessoaRouteOptions, PostPessoaHandler)
