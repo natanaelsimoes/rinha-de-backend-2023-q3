@@ -41,6 +41,12 @@ export const GetPessoaHandler: RouteHandlerMethod = async (request: FastifyReque
   }
 }
 
+/**
+ * @see https://www.postgresql.org/docs/current/pgtrgm.html
+ * @param request
+ * @param reply
+ * @returns
+ */
 export const GetPessoasHandler: RouteHandlerMethod = async (request: FastifyRequest<{ Querystring: GetPessoasQuerystring }>, reply) => {
   if (request.validationError != null) {
     return await reply

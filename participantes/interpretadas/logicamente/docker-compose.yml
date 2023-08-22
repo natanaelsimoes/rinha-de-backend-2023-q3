@@ -2,13 +2,16 @@ version: '3.5'
 services:
   api1:
     build: .
+    image: natanaelsimoes/rinha2023q3
     hostname: api1
     depends_on:
       - db
+      - redis
     expose:
       - "3000"
     environment:
       - DATABASE_HOST=db
+      - REDIS_HOST=redis
     deploy:
       resources:
         limits:
@@ -16,14 +19,17 @@ services:
           memory: '0.5GB'
 
   api2:
-    build: .
+    image: natanaelsimoes/rinha2023q3
     hostname: api2
     depends_on:
       - db
+      - redis
+      - api1
     expose:
       - "3000"
     environment:
       - DATABASE_HOST=db
+      - REDIS_HOST=redis
     deploy:
       resources:
         limits:
@@ -45,14 +51,34 @@ services:
           cpus: '0.25'
           memory: '0.5GB'
 
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    expose:
+      - 6379
+    command: redis-server --save "" --appendonly no
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '0.75GB'
+
   db:
    image: postgres:15.3
    expose:
      - "5432"
+   ports:
+     - "5432:5432"
    environment:
      - POSTGRES_PASSWORD=root
    deploy:
       resources:
         limits:
-          cpus: '0.75'
-          memory: '1.5GB'
+          cpus: '0.5'
+          memory: '0.75GB'
