@@ -50,7 +50,7 @@ export const GetPessoaHandler: RouteHandlerMethod = async (request: FastifyReque
 export const GetPessoasHandler: RouteHandlerMethod = async (request: FastifyRequest<{ Querystring: GetPessoasQuerystring }>, reply) => {
   if (request.validationError != null) {
     return await reply
-      .code(200)
+      .code(400)
       .send([])
   }
 

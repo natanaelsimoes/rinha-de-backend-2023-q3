@@ -65,6 +65,7 @@ export const GetPessoasRouteOptions: RouteShorthandOptions = {
   schema: {
     querystring: {
       type: 'object',
+      required: ['t'],
       properties: {
         t: {
           type: 'string'
@@ -82,7 +83,7 @@ export const GetPessoasRouteOptions: RouteShorthandOptions = {
 }
 
 export interface GetPessoasQuerystring {
-  t?: string
+  t: string
 }
 
 export const GetContagemPessoasRouteOptions: RouteShorthandOptions = {
