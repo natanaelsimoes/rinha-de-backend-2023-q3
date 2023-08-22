@@ -18,5 +18,6 @@ export const AppDataSource = new DataSource({
       url: `redis://${process.env.REDIS_HOST ?? 'localhost'}:6379`
     },
     ignoreErrors: true
-  }
+  },
+  poolSize: 200
 })
