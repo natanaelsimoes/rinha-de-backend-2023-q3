@@ -51,7 +51,7 @@ export const GetPessoasHandler: RouteHandlerMethod = async (request: FastifyRequ
   if (request.validationError != null) {
     return await reply
       .code(400)
-      .send([])
+      .send()
   }
 
   const queryBuilder = Pessoa.createQueryBuilder()
